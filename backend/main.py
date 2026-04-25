@@ -2,9 +2,14 @@
 
 Environment:
   OPENAI_API_KEY — required for POST /api/voice/interpret (Whisper + parser); set in
-    `.env` at the repository root and/or in `backend/.env` (backend file wins on duplicates).
+  `.env` at the repository root and/or in `backend/.env` (backend file wins on duplicates).
+  SKYSCANNER_API_KEY — required for POST /api/flights/live-search when search slots are complete.
+  SKYSCANNER_MARKET — optional default market (e.g. UK); SKYSCANNER_LOCALE (e.g. en-GB);
+  SKYSCANNER_CURRENCY — optional default (e.g. GBP).
   FRONTEND_ORIGINS — optional comma-separated CORS origins (defaults include Vite dev).
   WHISPER_MODEL — defaults to whisper-1; PARSER_MODEL — defaults to gpt-4o-mini.
+  QUICKET_APP_ID / QUICKET_PRIVATE_KEY — Quicket JETS seat map & cabin APIs (/api/seatmaps/quicket/*).
+  QUICKET_BASE_URL — optional; defaults to https://sandbox.quicket.io.
 """
 
 import logging
@@ -22,6 +27,8 @@ _repo_root = _backend_dir.parent
 load_dotenv(_repo_root / ".env", override=True)
 load_dotenv(_backend_dir / ".env", override=True)
 
+from routers.flights import router as flights_router
+from routers.seatmaps import router as seatmaps_router
 from routers.voice import router as voice_router
 
 logging.getLogger("routers").setLevel(logging.INFO)
@@ -42,6 +49,8 @@ app.add_middleware(
 )
 
 app.include_router(voice_router)
+app.include_router(flights_router)
+app.include_router(seatmaps_router)
 
 
 @app.get("/health")

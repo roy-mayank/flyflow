@@ -177,6 +177,116 @@ body {
   max-height: 16rem;
 }
 
+.results-json--compact {
+  max-height: 10rem;
+}
+
+.results-flight-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.results-flight-heading {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.results-flight-meta {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.results-flight-meta code {
+  font-size: 0.8rem;
+  background: #f1f5f9;
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.25rem;
+}
+
+.results-flight-status {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: #0369a1;
+}
+
+.results-flight-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.results-flight-ready {
+  margin: 0 0 0.5rem;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.itinerary-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.itinerary-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  background: #f8fafc;
+}
+
+.itinerary-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.itinerary-price {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.itinerary-link {
+  font-size: 0.85rem;
+  color: #0369a1;
+}
+
+.itinerary-legs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.itinerary-leg {
+  font-size: 0.82rem;
+  color: #475569;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.itinerary-leg__route {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.itinerary-leg__carrier {
+  font-size: 0.78rem;
+}
+
+.itinerary-leg__time {
+  font-size: 0.76rem;
+  color: #64748b;
+}
+
 /* Shiny FAB */
 .voice-fab {
   position: fixed;

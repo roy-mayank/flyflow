@@ -4,6 +4,7 @@ import io
 import json
 import logging
 import os
+from datetime import date
 from typing import Any
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
@@ -28,6 +29,32 @@ PARSED_INTENT_SCHEMA: dict[str, Any] = {
             "type": "object",
             "additionalProperties": True,
             "description": "Key-value slots extracted from the utterance.",
+            "properties": {
+                "originIata": {
+                    "type": "string",
+                    "description": "3-letter IATA airport code for departure.",
+                },
+                "destinationIata": {
+                    "type": "string",
+                    "description": "3-letter IATA airport code for arrival.",
+                },
+                "outboundDate": {
+                    "type": "string",
+                    "description": "Outbound departure date as YYYY-MM-DD.",
+                },
+                "returnDate": {
+                    "type": "string",
+                    "description": "Return date YYYY-MM-DD if round trip.",
+                },
+                "adults": {"type": "number"},
+                "cabinClass": {
+                    "type": "string",
+                    "description": "economy, premium economy, business, or first.",
+                },
+                "market": {"type": "string"},
+                "locale": {"type": "string"},
+                "currency": {"type": "string"},
+            },
         },
         "items": {
             "type": "array",
@@ -106,11 +133,16 @@ async def interpret_voice(audio: UploadFile = File(...)) -> dict[str, Any]:
 
     system = (
         "You convert user voice transcripts into a single structured intent. "
-        "instructionType is a short free-form verb or category. "
-        "entities holds extracted key-value slots. items holds string targets. "
-        "confidence is 0-1."
+        "instructionType is a short free-form verb or category (e.g. search_flights, filter). "
+        "entities holds extracted key-value slots. For flight-related speech, always fill "
+        "when mentioned: originIata and destinationIata as 3-letter IATA airport codes "
+        "(infer common airports from city names when unambiguous), outboundDate as "
+        "YYYY-MM-DD (resolve relative dates using today's date from the user message "
+        "context when given), optional returnDate, adults (default 1), cabinClass "
+        "(economy|premium economy|business|first). Also set market/locale/currency if stated. "
+        "items holds string targets. confidence is 0-1."
     )
-    user = f"Transcript:\n{transcript}"
+    user = f"Transcript:\n{transcript}\n\nToday's date (ISO): {date.today().isoformat()}"
 
     try:
         completion = client.chat.completions.create(
